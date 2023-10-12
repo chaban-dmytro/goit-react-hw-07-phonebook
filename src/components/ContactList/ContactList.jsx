@@ -1,13 +1,17 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import css from './ContactList.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { remove } from '../../redux/slice';
+import { deleteContact, getContactsList } from 'redux/operations';
 
 const ContactList = () => {
   const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
   const dispath = useDispatch();
+
+  useEffect(() => {
+    dispath(getContactsList());
+  }, [dispath]);
 
   function getFilterContacts() {
     const normalizedFilter = filter.toLowerCase();
@@ -17,7 +21,7 @@ const ContactList = () => {
   }
 
   function onDeleteContact(id) {
-    dispath(remove(id));
+    dispath(deleteContact(id));
   }
 
   if (getFilterContacts().length === 0) {

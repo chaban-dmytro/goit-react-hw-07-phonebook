@@ -1,11 +1,10 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { nanoid } from 'nanoid';
 import { Button } from '@mui/material';
 import css from './AddContact.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from '../../redux/slice';
+import { addNewContact } from 'redux/operations';
 
 const AddContact = () => {
   const contacts = useSelector(state => state.contacts.contacts);
@@ -21,7 +20,7 @@ const AddContact = () => {
       alert(`${values.name} is already in contacts!`);
       return;
     } else {
-      dispath(add(values));
+      dispath(addNewContact(values));
     }
   }
 
@@ -50,7 +49,6 @@ const AddContact = () => {
       }}
       validationSchema={validationSchema}
       onSubmit={(values, actions) => {
-        values.id = nanoid();
         onAddNewContact(values);
         actions.resetForm();
       }}
