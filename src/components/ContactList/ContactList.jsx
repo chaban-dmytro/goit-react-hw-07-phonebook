@@ -7,6 +7,7 @@ import { deleteContact, getContactsList } from 'redux/operations';
 const ContactList = () => {
   const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
+  const isLoading = useSelector(state => state.isLoading);
   const dispath = useDispatch();
 
   useEffect(() => {
@@ -27,25 +28,29 @@ const ContactList = () => {
   if (getFilterContacts().length === 0) {
     return;
   } else {
-    return (
-      <ul className={css.items}>
-        {getFilterContacts().map(contact => {
-          return (
-            <li className={css.item} key={contact.id}>
-              <span>{contact.name}: </span>
-              <span>{contact.phone}</span>
-              <Button
-                type="button"
-                variant="contained"
-                onClick={() => onDeleteContact(contact.id)}
-              >
-                Delete
-              </Button>
-            </li>
-          );
-        })}
-      </ul>
-    );
+    if (isLoading === true) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <ul className={css.items}>
+          {getFilterContacts().map(contact => {
+            return (
+              <li className={css.item} key={contact.id}>
+                <span>{contact.name}: </span>
+                <span>{contact.phone}</span>
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={() => onDeleteContact(contact.id)}
+                >
+                  Delete
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      );
+    }
   }
 };
 
